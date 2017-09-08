@@ -4,7 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -19,16 +23,34 @@ import com.google.zxing.oned.EAN13Writer;
 * */
 public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
+    private EditText editText;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String barcode = "a123456789101";
         imageView = (ImageView)findViewById(R.id.imageView);
-        Bitmap bm = makeBarcode(barcode, 300, 100);
-        imageView.setImageBitmap(bm);
+        editText = (EditText)findViewById(R.id.editText);
+        button = (Button)findViewById(R.id.button);
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               String  barcode = editText.getText().toString();
+
+                if(barcode.length() == 13){
+                    Bitmap bm = makeBarcode(barcode, 300, 100);
+                    imageView.setImageBitmap(bm);
+                }else{
+                    Toast.makeText(MainActivity.this, "13자리를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
     }
 
